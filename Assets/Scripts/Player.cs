@@ -19,8 +19,10 @@ public class Player : MonoBehaviour {
 	public static bool powerLoss = false;
 
 	// audio
-	public AudioSource powerDown;
+	AudioSource powerDown;
 	bool powerDownPlay = false;
+	AudioSource crash;
+	bool crashPlay = false;
 
 	float distThisFrame;
 
@@ -36,6 +38,8 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		powerDown = GameObject.Find ("/Main Camera/powerDown").GetComponent<AudioSource> ();
+		crash = GameObject.Find ("/Main Camera/crash").GetComponent<AudioSource> ();
+
 		rb = GetComponent<Rigidbody> ();
 		rb.angularVelocity = Vector3.zero;
 		rb.constraints = RigidbodyConstraints.FreezePositionY;
@@ -49,10 +53,6 @@ public class Player : MonoBehaviour {
 
 			// turning the hovercraft
 			transform.eulerAngles = new Vector3 (0, 0, Input.GetAxis ("Horizontal") * -15);
-
-			if (Mathf.Abs (rb.velocity.x) > 300) {
-				Debug.Log ("Speed over 300!");
-			}
 
 			// moving the hovercraft left and right
 			rb.AddForce (Vector3.right * Input.GetAxis ("Horizontal") * turnSpeed * Time.deltaTime);
@@ -91,7 +91,6 @@ public class Player : MonoBehaviour {
 		// setting velocity for collision
 		velocity = rb.velocity.magnitude;			
 		transform.position = new Vector3 (transform.position.x, 5f, transform.position.z);
-
 	}
 
 	void OnCollisionEnter (Collision other) {
@@ -121,10 +120,11 @@ public class Player : MonoBehaviour {
 	}
 
 	void Death () {
+		if (!crashPlay) {
+			crash.Play ();
+			crashPlay = true;
+		}
 		rb.constraints = RigidbodyConstraints.None;
-		rb.AddTorque (Vector3.up * 100000f);
-		rb.AddTorque (Vector3.right * 100000f);
-		rb.AddTorque (Vector3.forward * 100000f);
 	}
 
 	void PowerLoss () {
@@ -153,10 +153,13 @@ public class Player : MonoBehaviour {
 		distance = 0;
 		dead = false;
 		powerLoss = false;
+
+		// resetting rigidbody values
 		rb = GetComponent<Rigidbody> ();
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 		rb.constraints = RigidbodyConstraints.FreezePositionY;
+
 		Debug.Log ("Level Loaded");
 		Debug.Log (scene.name);
 		Debug.Log (mode);

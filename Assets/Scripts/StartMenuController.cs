@@ -12,12 +12,8 @@ public class StartMenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		helpCanvas.gameObject.SetActive (false);
+		settingsCanvas.GetComponent<SettingsCanvas> ().UpdateHighscore ();
 		settingsCanvas.gameObject.SetActive (false);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void Play(){

@@ -17,8 +17,8 @@ public class ObjectPool : MonoBehaviour {
 	// obstacle generation
 	float obsX;
 	float obsZ;
-	float obsOffset = 1200; // the original offset (new obstacles will spawn [x] m in the distance)
-	float obsRange = 3000; // the left or right maximum spawn 
+	float obsOffset = 1600; // the original offset (new obstacles will spawn [x] m in the distance)
+	float obsRange = 4000; // the left or right maximum spawn 
 	public float obsEveryDist = 200f;
 	public float everyDistCounter = 0;
 	float distThisFrame;

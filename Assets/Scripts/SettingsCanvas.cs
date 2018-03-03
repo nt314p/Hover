@@ -65,9 +65,12 @@ public class SettingsCanvas : MonoBehaviour {
 		}
 			
 		UpdateQuality ();
-		highscoreText.text = "Highscore: " + PlayerPrefs.GetFloat ("Highscore").ToString() + " m";
+		UpdateHighscore ();
 	}
 
+	public void UpdateHighscore (){
+		highscoreText.text = "Highscore: " + PlayerPrefs.GetFloat ("Highscore").ToString () + " m";
+	}
 
 	public void ChangeControlMethod (){
 		if (contMethod) {
@@ -106,7 +109,6 @@ public class SettingsCanvas : MonoBehaviour {
 
 	public void UpdateQuality(){
 		QualitySettings.SetQualityLevel (qualSettings);
-
 	}
 
 	public void resetHighscores(){
@@ -129,6 +131,4 @@ public class SettingsCanvas : MonoBehaviour {
 
 		PlayerPrefs.Save ();
 	}
-
-
 }
