@@ -20,10 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4488838838773734}
   - component: {fileID: 65149046173838606}
-  - component: {fileID: 114131044761379842}
   m_Layer: 0
   m_Name: ElectricityPickup
-  m_TagString: Untagged
+  m_TagString: electricityPickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,14 +124,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7.5, y: 24, z: 2.27}
   m_Center: {x: 1.3, y: -0.22, z: -0.13}
---- !u!114 &114131044761379842
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1185350157866254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd656018eb3140f8a6b250ef8873241, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

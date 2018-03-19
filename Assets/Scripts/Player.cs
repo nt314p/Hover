@@ -28,12 +28,7 @@ public class Player : MonoBehaviour {
 
 	public static float playerZ;
 
-	// pickups
-	public GameObject electricityPickup;
-	public GameObject wrenchPickup;
-
 	Rigidbody rb;
-
 
 	// Use this for initialization
 	void Start () {
@@ -98,6 +93,18 @@ public class Player : MonoBehaviour {
 		// detecting collisions and deducting health
 		if (other.gameObject.CompareTag ("obstacle")) {
 			health -= Mathf.Abs (velocity * 0.02f);
+		}
+	}
+
+	// checking for pickups
+	void OnTriggerEnter (Collider other) {
+		if (other.gameObject.CompareTag("wrenchPickup")) {
+			AddHealth ();
+			other.gameObject.SetActive (false);
+		}
+		if (other.gameObject.CompareTag("electricityPickup")) {
+			AddElectricity ();
+			other.gameObject.SetActive (false);
 		}
 	}
 

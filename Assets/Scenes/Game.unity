@@ -1886,8 +1886,8 @@ GameObject:
   - component: {fileID: 1408180873}
   - component: {fileID: 1408180872}
   - component: {fileID: 1408180875}
-  - component: {fileID: 1408180877}
   - component: {fileID: 1408180876}
+  - component: {fileID: 1408180874}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1926,6 +1926,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1408180874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1408180871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730c63c38881b48ba8d1100851b5a70e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 150
+  turnAngle: 0
+  velocity: 0
+  electricityPickup: {fileID: 1185350157866254, guid: d59d9b68dcf6cd6499b54b6a2b942909,
+    type: 2}
+  wrenchPickup: {fileID: 1017379527430192, guid: 7d296d8dbb252420a94c9397627bebcf,
+    type: 2}
 --- !u!65 &1408180875
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1955,25 +1973,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
---- !u!114 &1408180877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114211518286736872, guid: 7dcca7a5fba87427591f10527575b2a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1408180871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 730c63c38881b48ba8d1100851b5a70e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  acceleration: 150
-  turnAngle: 0
-  velocity: 0
-  electricityPickup: {fileID: 1185350157866254, guid: d59d9b68dcf6cd6499b54b6a2b942909,
-    type: 2}
-  wrenchPickup: {fileID: 1017379527430192, guid: 7d296d8dbb252420a94c9397627bebcf,
-    type: 2}
 --- !u!1 &1415112888
 GameObject:
   m_ObjectHideFlags: 0

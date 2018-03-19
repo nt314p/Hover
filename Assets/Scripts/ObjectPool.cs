@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour {
 
-	// the object pool
+	// the object pools
 	GameObject[,] obstaclePool;
+	GameObject[,] wrenchPool;
+	GameObject[,] electricityPool;
 
 	public GameObject obstacle;
 	public GameObject electricityPickup;
@@ -15,8 +17,6 @@ public class ObjectPool : MonoBehaviour {
 	float forwardVel; // the velocity of the player
 
 	// obstacle generation
-	float obsX;
-	float obsZ;
 	float obsOffset = 1600; // the original offset (new obstacles will spawn [x] m in the distance)
 	float obsRange = 4000; // the left or right maximum spawn 
 	public float obsEveryDist = 200f;
@@ -24,21 +24,38 @@ public class ObjectPool : MonoBehaviour {
 	float distThisFrame;
 
 	int obsDensity = 80; // number of objects to distribute across the range
-	int rowNum = 0; // 0 - 6 is 1 - 7
+	int wrenchDensity = 3;
+	int electricityDensity = 16;
+	public int rowNum = 0; // 0 - 6 is 1 - 7
 	int rows; // how many rows of obstacles can exist at once
 
 	void Start () {
 
-		rows = (int)(obsOffset/obsEveryDist) + 2; // setting rows
+		rows = (int)(obsOffset / obsEveryDist) + 2; // setting rows
 
-		// filling object pool
-		obstaclePool = new GameObject[obsDensity,rows];
 		Player = GameObject.FindGameObjectWithTag ("Player");
 
+		// sizing object pools
+		obstaclePool = new GameObject[obsDensity, rows];
+		wrenchPool = new GameObject[wrenchDensity, rows];
+		electricityPool = new GameObject[electricityDensity, rows];
 
-		for (int i = 0; i < obsDensity; i++) {
-			for (int j = 0; j < rows; j++) {
-				obstaclePool [i,j] = Instantiate(obstacle, new Vector3(0, 0, -obsOffset), Quaternion.identity);
+		// filling object pools
+		for (int j = 0; j < rows; j++) {
+			for (int i = 0; i < obsDensity; i++) {
+				obstaclePool [i, j] = Instantiate (obstacle, new Vector3 (0, 0, -obsOffset), Quaternion.identity);
+			}
+			for (int i = 0; i < wrenchDensity; i++) {
+				wrenchPool [i, j] = Instantiate (wrenchPickup, new Vector3 (0, 0, -obsOffset), Quaternion.identity);
+			}
+			for (int i = 0; i < electricityDensity; i++) {
+				electricityPool [i, j] = Instantiate (electricityPickup, new Vector3 (0, 0, -obsOffset), Quaternion.identity);
+			}
+		}
+
+		for (int j = 0; j < rows; j++) {
+			for (int i = 0; i < wrenchDensity; i++) {
+				Debug.Log (wrenchPool [0, 0]);
 			}
 		}
 	}
@@ -59,15 +76,34 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public void spawnRow(){
+		float offsetZ = Player.transform.position.z + obsOffset;
+
+		// spawning obstacles
 		for (int i = 0; i < obsDensity; i++) {
 			// setting x and z of the obstacle
-			obsX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
-			obsZ = Player.transform.position.z + obsOffset;
+			float obsX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
 
 			// spawning obstacle
-			obstaclePool[i, rowNum].transform.position = new Vector3 (obsX, 6, obsZ);
+			obstaclePool[i, rowNum].transform.position = new Vector3 (obsX, 6, offsetZ);
 			obstaclePool[i, rowNum].transform.rotation = Quaternion.identity;
-			CreatePickups ();
+		}
+
+		for (int i = 0; i < wrenchDensity; i++) {
+			float pkupX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
+
+			// spawning wrench pickup
+			wrenchPool[i, rowNum].SetActive(true); // enabling
+			wrenchPool[i, rowNum].transform.position = new Vector3 (pkupX, 10f, offsetZ);
+			wrenchPool[i, rowNum].transform.rotation = Quaternion.identity;
+		}
+
+		for (int i = 0; i < electricityDensity; i++) {
+			float pkupX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
+
+			// spawning electricity pickup
+			electricityPool[i, rowNum].SetActive(true); // enabling
+			electricityPool[i, rowNum].transform.position = new Vector3 (pkupX, 10f, offsetZ);
+			electricityPool[i, rowNum].transform.rotation = Quaternion.identity;
 		}
 
 		rowNum++;
@@ -75,23 +111,6 @@ public class ObjectPool : MonoBehaviour {
 		// resetting the row counter
 		if (rowNum >= rows) {
 			rowNum = 0;
-		}
-	}
-
-	public void CreatePickups () {
-
-		// electricity
-		if (Random.Range (0, 5) == 2) {
-			float pX = Random.Range (-obsRange, obsRange) + transform.position.x;
-			float pZ = obsZ;
-			Instantiate (electricityPickup, new Vector3 (pX, 10f, pZ), Quaternion.identity);
-		}
-
-		// wrench
-		if (Random.Range (0, 30) == 2) {
-			float wX = Random.Range (-obsRange, obsRange) + transform.position.x;
-			float wZ = obsZ;
-			Instantiate (wrenchPickup, new Vector3 (wX, 10f, wZ), Quaternion.identity);
 		}
 	}
 }
