@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 	public float acceleration = 150f;
 	float turnSpeed = 20000f;
 	public float turnAngle = 0f;
+	public float turnStatus = 0; // -1 left, 0 nono, 1 right
 	public float velocity;
 
 	public static float health = 100f;
@@ -25,7 +26,6 @@ public class Player : MonoBehaviour {
 	bool crashPlay = false;
 
 	float distThisFrame;
-
 	public static float playerZ;
 
 	Rigidbody rb;
@@ -47,11 +47,46 @@ public class Player : MonoBehaviour {
 			forwardVel = rb.velocity.z;
 
 			// turning the hovercraft
-			transform.eulerAngles = new Vector3 (0, 0, Input.GetAxis ("Horizontal") * -15);
+			if (Input.touchCount > 0) {
+				Touch t = Input.GetTouch (0);
+				if (t.position.x < Screen.width / 2) {
+					Debug.Log ("Left touch");
+					turnStatus = -1;
+				}
+				if (t.position.x > Screen.width / 2) {
+					Debug.Log ("Right touch");
+					turnStatus = 1;
+				}
+			} else {
+				Debug.Log ("No touch");
+				turnStatus = 0;
+			}
+						
+			//turnAngle = Input.GetAxis ("Horizontal") * -15;
+
+			if (!(Mathf.Abs (turnAngle + 45 * turnStatus * Time.deltaTime) > 15)) {
+				turnAngle -= 45 * turnStatus * Time.deltaTime;
+			}
+
+			if (Mathf.Abs (turnAngle) < 0.3) {
+				turnAngle = 0;
+			}
+
+			if (turnStatus == 0) {
+				if (turnAngle > 0) {
+					turnAngle -= 45 * Time.deltaTime;
+				} else if (turnAngle < 0) {
+					turnAngle += 45 * Time.deltaTime;
+				}
+			}
+				
+			transform.eulerAngles = new Vector3 (0, 0, turnAngle);
 
 			// moving the hovercraft left and right
-			rb.AddForce (Vector3.right * Input.GetAxis ("Horizontal") * turnSpeed * Time.deltaTime);
-			// Debug.Log(Input.GetAxis ("Horizontal"));
+			//rb.AddForce (Vector3.right * Input.GetAxis ("Horizontal") * turnSpeed * Time.deltaTime);
+			rb.AddForce (Vector3.right * turnAngle / -15 * turnSpeed * Time.deltaTime);
+
+			//Debug.Log(Input.GetAxis ("Horizontal") + ", " + Time.time * 1000);
 
 			// forward movement
 			if (forwardVel < 250) {

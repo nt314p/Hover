@@ -52,12 +52,6 @@ public class ObjectPool : MonoBehaviour {
 				electricityPool [i, j] = Instantiate (electricityPickup, new Vector3 (0, 0, -obsOffset), Quaternion.identity);
 			}
 		}
-
-		for (int j = 0; j < rows; j++) {
-			for (int i = 0; i < wrenchDensity; i++) {
-				Debug.Log (wrenchPool [0, 0]);
-			}
-		}
 	}
 	
 	// Update is called once per frame
@@ -80,11 +74,16 @@ public class ObjectPool : MonoBehaviour {
 
 		// spawning obstacles
 		for (int i = 0; i < obsDensity; i++) {
-			// setting x and z of the obstacle
+			// setting x of obstacle
 			float obsX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
 
+			// randomizing width and height
+			float w = Random.Range (10, 40);
+			float h = Random.Range (30, 180);
+
 			// spawning obstacle
-			obstaclePool[i, rowNum].transform.position = new Vector3 (obsX, 6, offsetZ);
+			obstaclePool[i, rowNum].transform.localScale = new Vector3 (w, h, 20); // scaling obstacle
+			obstaclePool[i, rowNum].transform.position = new Vector3 (obsX, (h/2 - 6), offsetZ);
 			obstaclePool[i, rowNum].transform.rotation = Quaternion.identity;
 		}
 
