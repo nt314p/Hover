@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 	public static float distance = 0f;
 	public static bool dead = false;
 	public static bool powerLoss = false;
+	public static float playerZ;
 
 	// audio
 	AudioSource powerDown;
@@ -26,12 +27,12 @@ public class Player : MonoBehaviour {
 	bool crashPlay = false;
 
 	float distThisFrame;
-	public static float playerZ;
 
 	Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
+
 		powerDown = GameObject.Find ("/Main Camera/powerDown").GetComponent<AudioSource> ();
 		crash = GameObject.Find ("/Main Camera/crash").GetComponent<AudioSource> ();
 
@@ -49,34 +50,27 @@ public class Player : MonoBehaviour {
 			// turning the hovercraft
 			if (Input.touchCount > 0) {
 				Touch t = Input.GetTouch (0);
+				//Debug.Log (t.position);
 				if (t.position.x < Screen.width / 2) {
-					Debug.Log ("Left touch");
 					turnStatus = -1;
-				}
-				if (t.position.x > Screen.width / 2) {
-					Debug.Log ("Right touch");
+				} else if (t.position.x > Screen.width / 2) {
 					turnStatus = 1;
 				}
 			} else {
-				Debug.Log ("No touch");
 				turnStatus = 0;
 			}
-						
-			//turnAngle = Input.GetAxis ("Horizontal") * -15;
+
+			turnStatus = Input.GetAxis ("Horizontal");
 
 			if (!(Mathf.Abs (turnAngle + 45 * turnStatus * Time.deltaTime) > 15)) {
 				turnAngle -= 45 * turnStatus * Time.deltaTime;
 			}
 
-			if (Mathf.Abs (turnAngle) < 0.3) {
-				turnAngle = 0;
-			}
-
-			if (turnStatus == 0) {
+			if (turnStatus == 0) { // returning to middle
 				if (turnAngle > 0) {
-					turnAngle -= 45 * Time.deltaTime;
+					turnAngle = Mathf.Max(0, turnAngle - 45 * Time.deltaTime);
 				} else if (turnAngle < 0) {
-					turnAngle += 45 * Time.deltaTime;
+					turnAngle = Mathf.Min(0, turnAngle + 45 * Time.deltaTime);
 				}
 			}
 				
@@ -112,7 +106,6 @@ public class Player : MonoBehaviour {
 				PowerLoss ();
 			}
 
-			// setting player's y to 5
 			playerZ = this.transform.position.z;
 		}
 	}
@@ -144,21 +137,11 @@ public class Player : MonoBehaviour {
 	}
 
 	public static void AddElectricity () {
-		electricity += 50;
-
-		// capping electricity
-		if (electricity > 1000) {
-			electricity = 1000;
-		}
+		electricity = Mathf.Min(1000, electricity + 50);
 	}
 
 	public static void AddHealth () {
-		health += 5;
-
-		// capping health
-		if (health > 100) {
-			health = 100;
-		}
+		health = Mathf.Min(100, health + 5);
 	}
 
 	void Death () {

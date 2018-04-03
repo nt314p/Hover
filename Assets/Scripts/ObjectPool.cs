@@ -12,7 +12,7 @@ public class ObjectPool : MonoBehaviour {
 	public GameObject obstacle;
 	public GameObject electricityPickup;
 	public GameObject wrenchPickup;
-	GameObject Player;
+	GameObject player;
 
 	float forwardVel; // the velocity of the player
 
@@ -33,7 +33,7 @@ public class ObjectPool : MonoBehaviour {
 
 		rows = (int)(obsOffset / obsEveryDist) + 2; // setting rows
 
-		Player = GameObject.FindGameObjectWithTag ("Player");
+		player = GameObject.FindGameObjectWithTag ("Player");
 
 		// sizing object pools
 		obstaclePool = new GameObject[obsDensity, rows];
@@ -56,26 +56,27 @@ public class ObjectPool : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!Player.dead && !Player.powerLoss) {
+			forwardVel = player.GetComponent<Rigidbody> ().velocity.z;
 
-		forwardVel = Player.GetComponent<Rigidbody>().velocity.z;
+			// spawning objects
+			if (everyDistCounter >= obsEveryDist) {
+				everyDistCounter = 0;
+				spawnRow ();
+			}
 
-		// spawning objects
-		if (everyDistCounter >= obsEveryDist) {
-			everyDistCounter = 0;
-			spawnRow ();
+			distThisFrame = Mathf.Round (100 * forwardVel * Time.deltaTime) / 100f;
+			everyDistCounter += distThisFrame;
 		}
-
-		distThisFrame = Mathf.Round (100 * forwardVel * Time.deltaTime) / 100f;
-		everyDistCounter += distThisFrame;
 	}
 
 	public void spawnRow(){
-		float offsetZ = Player.transform.position.z + obsOffset;
+		float offsetZ = player.transform.position.z + obsOffset;
 
 		// spawning obstacles
 		for (int i = 0; i < obsDensity; i++) {
 			// setting x of obstacle
-			float obsX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
+			float obsX = Random.Range (-obsRange, obsRange) + player.transform.position.x;
 
 			// randomizing width and height
 			float w = Random.Range (10, 40);
@@ -88,7 +89,7 @@ public class ObjectPool : MonoBehaviour {
 		}
 
 		for (int i = 0; i < wrenchDensity; i++) {
-			float pkupX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
+			float pkupX = Random.Range (-obsRange, obsRange) + player.transform.position.x;
 
 			// spawning wrench pickup
 			wrenchPool[i, rowNum].SetActive(true); // enabling
@@ -97,7 +98,7 @@ public class ObjectPool : MonoBehaviour {
 		}
 
 		for (int i = 0; i < electricityDensity; i++) {
-			float pkupX = Random.Range (-obsRange, obsRange) + Player.transform.position.x;
+			float pkupX = Random.Range (-obsRange, obsRange) + player.transform.position.x;
 
 			// spawning electricity pickup
 			electricityPool[i, rowNum].SetActive(true); // enabling

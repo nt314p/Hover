@@ -4,18 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-
 public class CanvasController : MonoBehaviour {
 
 	// status text
-	public Text healthText;
-	public Text electricityText;
-	public Text speedText;
-	public Text distanceText;
-	public Text deathTitleText;
-	public GameObject fpsText;
-	public Text fpsTextObj;
-	public GameObject newHighscoreText;
+	Text healthText;
+	Text electricityText;
+	Text speedText;
+	Text distanceText;
+	Text deathTitleText;
+	Text fpsText;
+	Text newHighscoreText;
+	Text endDistText;
+	GameObject left;
+	GameObject right;
 
 	// audio
 	AudioSource backgroundMusic;
@@ -27,13 +28,31 @@ public class CanvasController : MonoBehaviour {
 	float fps;
 	float updateRate;
 
-
-	public Text endDistText;
-	public Canvas deathCanvas;
+	Canvas deathCanvas;
 
 
 	// Use this for initialization
 	void Start () {
+		
+		healthText = GameObject.Find ("/MainCanvas/healthText").GetComponent<Text> ();
+		electricityText = GameObject.Find ("/MainCanvas/electricityText").GetComponent<Text> ();
+		speedText = GameObject.Find ("/MainCanvas/speedText").GetComponent<Text> ();
+		distanceText = GameObject.Find ("/MainCanvas/distanceText").GetComponent<Text> ();
+		fpsText = GameObject.Find ("/MainCanvas/fpsText").GetComponent<Text> ();
+		newHighscoreText = GameObject.Find ("/DeathCanvas/newHighText").GetComponent<Text> ();
+		deathTitleText = GameObject.Find ("/DeathCanvas/titleText").GetComponent<Text> ();
+		endDistText = GameObject.Find ("/DeathCanvas/endDistText").GetComponent<Text> ();
+
+		deathCanvas = GameObject.Find ("/DeathCanvas").GetComponent<Canvas> ();
+
+		left = GameObject.Find ("/MainCanvas/left");
+		right = GameObject.Find ("/MainCanvas/right");
+
+//		left.GetComponent<RectTransform> ().transform.localPosition = new Vector2(0 - Screen.width/4, 0);
+//		left.GetComponent<RectTransform> ().sizeDelta = new Vector2(Screen.width/2, Screen.height);
+//
+//		right.GetComponent<RectTransform> ().transform.localPosition = new Vector2(0 + Screen.width/4, 0);
+//		right.GetComponent<RectTransform> ().sizeDelta = new Vector2(Screen.width/2, Screen.height);
 
 		frameCount = 0.0f;
 		nextUpdate = 0.0f;
@@ -43,15 +62,12 @@ public class CanvasController : MonoBehaviour {
 		backgroundMusic = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
 		backgroundMusicVol = 1.0f;
 
-
 		deathCanvas.gameObject.SetActive (false);
 
 		if (PlayerPrefs.GetInt ("DebugMode") == 1) {
-			fpsText.SetActive (true);
-			fpsTextObj = fpsText.GetComponent<Text> ();
-
+			fpsText.gameObject.SetActive (true);
 		} else {
-			fpsText.SetActive (false);
+			fpsText.gameObject.SetActive (false);
 		}
 
 		nextUpdate = Time.time;
@@ -78,7 +94,7 @@ public class CanvasController : MonoBehaviour {
 					frameCount = 0;
 				}
 
-				fpsTextObj.text = "FPS: " + fps;
+				fpsText.text = "FPS: " + fps;
 			}
 
 		} else {
@@ -109,10 +125,20 @@ public class CanvasController : MonoBehaviour {
 
 			// setting new highscore
 			if (Player.distance > PlayerPrefs.GetFloat ("Highscore")) {
-				newHighscoreText.SetActive (true);
+				newHighscoreText.gameObject.SetActive (true);
 				PlayerPrefs.SetFloat ("Highscore", Player.distance);
+			} else {
+				newHighscoreText.gameObject.SetActive (false);
 			}
 		}
+	}
+
+	public void rightPress () {
+		Debug.Log ("right salad");
+	}
+
+	public void leftPress () {
+		Debug.Log ("left salad");
 	}
 
 	public void Quit () {
@@ -120,7 +146,6 @@ public class CanvasController : MonoBehaviour {
 	}
 
 	public void Restart () {
-
 		SceneManager.LoadScene ("Game");
 	}
 }
