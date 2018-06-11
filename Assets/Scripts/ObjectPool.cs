@@ -94,7 +94,7 @@ public class ObjectPool : MonoBehaviour {
 			// spawning wrench pickup
 			wrenchPool[i, rowNum].SetActive(true); // enabling
 			wrenchPool[i, rowNum].transform.position = new Vector3 (pkupX, 10f, offsetZ);
-			wrenchPool[i, rowNum].transform.rotation = Quaternion.identity;
+			wrenchPool[i, rowNum].transform.rotation = Quaternion.Euler(0, 0, 90);
 		}
 
 		for (int i = 0; i < electricityDensity; i++) {
@@ -103,7 +103,7 @@ public class ObjectPool : MonoBehaviour {
 			// spawning electricity pickup
 			electricityPool[i, rowNum].SetActive(true); // enabling
 			electricityPool[i, rowNum].transform.position = new Vector3 (pkupX, 10f, offsetZ);
-			electricityPool[i, rowNum].transform.rotation = Quaternion.identity;
+			electricityPool[i, rowNum].transform.rotation = Quaternion.Euler(0, 180, 0);
 		}
 
 		rowNum++;

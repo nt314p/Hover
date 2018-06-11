@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class CanvasController : MonoBehaviour {
 
+	bool paused = false;
+	bool debug = false;
+
 	// status text
 	Text healthText;
 	Text electricityText;
@@ -15,8 +18,6 @@ public class CanvasController : MonoBehaviour {
 	Text fpsText;
 	Text newHighscoreText;
 	Text endDistText;
-	GameObject left;
-	GameObject right;
 
 	// audio
 	AudioSource backgroundMusic;
@@ -29,11 +30,13 @@ public class CanvasController : MonoBehaviour {
 	float updateRate;
 
 	Canvas deathCanvas;
+	Canvas pauseCanvas;
 
 
 	// Use this for initialization
 	void Start () {
-		
+
+		// initializing variables
 		healthText = GameObject.Find ("/MainCanvas/healthText").GetComponent<Text> ();
 		electricityText = GameObject.Find ("/MainCanvas/electricityText").GetComponent<Text> ();
 		speedText = GameObject.Find ("/MainCanvas/speedText").GetComponent<Text> ();
@@ -44,29 +47,28 @@ public class CanvasController : MonoBehaviour {
 		endDistText = GameObject.Find ("/DeathCanvas/endDistText").GetComponent<Text> ();
 
 		deathCanvas = GameObject.Find ("/DeathCanvas").GetComponent<Canvas> ();
-
-		left = GameObject.Find ("/MainCanvas/left");
-		right = GameObject.Find ("/MainCanvas/right");
-
-//		left.GetComponent<RectTransform> ().transform.localPosition = new Vector2(0 - Screen.width/4, 0);
-//		left.GetComponent<RectTransform> ().sizeDelta = new Vector2(Screen.width/2, Screen.height);
-//
-//		right.GetComponent<RectTransform> ().transform.localPosition = new Vector2(0 + Screen.width/4, 0);
-//		right.GetComponent<RectTransform> ().sizeDelta = new Vector2(Screen.width/2, Screen.height);
+		pauseCanvas = GameObject.Find ("/PauseCanvas").GetComponent<Canvas> ();
 
 		frameCount = 0.0f;
 		nextUpdate = 0.0f;
 		fps = 0.0f;
 		updateRate = 4.0f;
 
+		// music settings
 		backgroundMusic = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
 		backgroundMusicVol = 1.0f;
 
+		// hiding both canvases
 		deathCanvas.gameObject.SetActive (false);
+		pauseCanvas.gameObject.SetActive (false);
+
+		newHighscoreText.gameObject.SetActive (false); // hiding the new highscore
 
 		if (PlayerPrefs.GetInt ("DebugMode") == 1) {
+			debug = true;
 			fpsText.gameObject.SetActive (true);
 		} else {
+			debug = false;
 			fpsText.gameObject.SetActive (false);
 		}
 
@@ -77,16 +79,20 @@ public class CanvasController : MonoBehaviour {
 	void Update () {
 
 		if (!Player.dead && !Player.powerLoss) {
+			if (Input.GetKeyUp (KeyCode.Escape) && !paused) {
+				Pause ();
+			} else if (Input.GetKeyUp (KeyCode.Escape) && paused) {
+				Resume ();
+			}
 
 			// displaying status
-			healthText.text = "Health: " + (Mathf.Round (10 * Player.health)) / 10f;
-			electricityText.text = "Electricity: " + (Mathf.Round (10 * Player.electricity)) / 10f;
-			speedText.text = "Speed: " + Mathf.Round ( Player.forwardVel) + " m/s";
-			distanceText.text = "Distance: " + (Mathf.Round (10 * Player.distance)) / 10 + " m";
+			healthText.text = "Health: " + System.Math.Round (Player.health, 1);
+			electricityText.text = "Electricity: " + System.Math.Round (Player.electricity, 1);
+			speedText.text = "Speed: " + System.Math.Round (Player.forwardVel, 1) + " m/s";
+			distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
 
 			// fps
-			if (PlayerPrefs.GetInt ("DebugMode") == 1) {
-
+			if (debug) {
 				frameCount++;
 				if (Time.time > nextUpdate) {
 					nextUpdate += 1.0f / updateRate;
@@ -110,35 +116,22 @@ public class CanvasController : MonoBehaviour {
 			// setting correct death cause
 			if (Player.dead) {
 				deathTitleText.text = "Wrecked!";
-				healthText.text = "Health: 0";
-
 			} else if (Player.powerLoss) {
 				deathTitleText.text = "Power Loss!";
-				electricityText.text = "Electricity: 0";
 			}
 
 			// just aligning some stuff up
-			distanceText.text = "Distance: " + (Mathf.Round (10 * Player.distance)) / 10 + " m";
+			distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
 
 			// end distance display
-			endDistText.text = "Distance: " + (Mathf.Round (10 * Player.distance)) / 10 + " m";
+			endDistText.text = distanceText.text;
 
 			// setting new highscore
 			if (Player.distance > PlayerPrefs.GetFloat ("Highscore")) {
 				newHighscoreText.gameObject.SetActive (true);
 				PlayerPrefs.SetFloat ("Highscore", Player.distance);
-			} else {
-				newHighscoreText.gameObject.SetActive (false);
 			}
 		}
-	}
-
-	public void rightPress () {
-		Debug.Log ("right salad");
-	}
-
-	public void leftPress () {
-		Debug.Log ("left salad");
 	}
 
 	public void Quit () {
@@ -146,6 +139,19 @@ public class CanvasController : MonoBehaviour {
 	}
 
 	public void Restart () {
+		Time.timeScale = 1;
 		SceneManager.LoadScene ("Game");
+	}
+
+	public void Pause () {
+		paused = true;
+		Time.timeScale = 0;
+		pauseCanvas.gameObject.SetActive (true);
+	}
+
+	public void Resume () {
+		paused = false;
+		Time.timeScale = 1;
+		pauseCanvas.gameObject.SetActive (false);
 	}
 }

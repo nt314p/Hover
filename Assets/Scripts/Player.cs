@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour {
 
 	// transform and rotation
-	public float acceleration = 150f;
+	float acceleration = 15000f;
 	float turnSpeed = 20000f;
 	public float turnAngle = 0f;
 	public float turnStatus = 0; // -1 left, 0 nono, 1 right
@@ -19,6 +19,8 @@ public class Player : MonoBehaviour {
 	public static bool dead = false;
 	public static bool powerLoss = false;
 	public static float playerZ;
+
+	string contMode;
 
 	// audio
 	AudioSource powerDown;
@@ -36,6 +38,8 @@ public class Player : MonoBehaviour {
 		powerDown = GameObject.Find ("/Main Camera/powerDown").GetComponent<AudioSource> ();
 		crash = GameObject.Find ("/Main Camera/crash").GetComponent<AudioSource> ();
 
+		contMode = PlayerPrefs.GetString ("ControlMode");
+
 		rb = GetComponent<Rigidbody> ();
 		rb.angularVelocity = Vector3.zero;
 		rb.constraints = RigidbodyConstraints.FreezePositionY;
@@ -47,44 +51,55 @@ public class Player : MonoBehaviour {
 		if (!dead && !powerLoss) {
 			forwardVel = rb.velocity.z;
 
-			// turning the hovercraft
-			if (Input.touchCount > 0) {
-				Touch t = Input.GetTouch (0);
-				//Debug.Log (t.position);
-				if (t.position.x < Screen.width / 2) {
-					turnStatus = -1;
-				} else if (t.position.x > Screen.width / 2) {
-					turnStatus = 1;
+			turnStatus = 0;
+
+			// TOUCH INPUT
+			if (contMode == "TouchInput" || contMode == "Any") {
+				if (Input.touchCount > 0) {
+					Touch t = Input.GetTouch (Input.touchCount-1); // get latest touch
+					if (t.position.x < Screen.width / 2) {
+						turnStatus = -1;
+					} else if (t.position.x > Screen.width / 2) {
+						turnStatus = 1;
+					}
 				}
-			} else {
-				turnStatus = 0;
 			}
 
-			turnStatus = Input.GetAxis ("Horizontal");
+			// ARROW KEY INPUT
+			if (contMode == "ArrowKeys" || contMode == "Any") {
+				float i = Input.GetAxis ("Horizontal");
+				if (!(i == 0)) {
+					turnStatus = i;
+				}
+			}
 
-			if (!(Mathf.Abs (turnAngle + 45 * turnStatus * Time.deltaTime) > 15)) {
+			// turn status 0: no turn; 1: right; -1: left;
+
+			// calculating the turn angle
+			if (!(Mathf.Abs (turnAngle - 45 * turnStatus * Time.deltaTime) > 15)) {
+				
 				turnAngle -= 45 * turnStatus * Time.deltaTime;
 			}
 
-			if (turnStatus == 0) { // returning to middle
+			// returning to middle
+			if (turnStatus == 0) { 
 				if (turnAngle > 0) {
-					turnAngle = Mathf.Max(0, turnAngle - 45 * Time.deltaTime);
+					turnAngle = Mathf.Max (0, turnAngle - 45 * Time.deltaTime);
 				} else if (turnAngle < 0) {
-					turnAngle = Mathf.Min(0, turnAngle + 45 * Time.deltaTime);
+					turnAngle = Mathf.Min (0, turnAngle + 45 * Time.deltaTime);
 				}
 			}
-				
+
+			// turning the hovercraft
 			transform.eulerAngles = new Vector3 (0, 0, turnAngle);
 
-			// moving the hovercraft left and right
-			//rb.AddForce (Vector3.right * Input.GetAxis ("Horizontal") * turnSpeed * Time.deltaTime);
-			rb.AddForce (Vector3.right * turnAngle / -15 * turnSpeed * Time.deltaTime);
 
-			//Debug.Log(Input.GetAxis ("Horizontal") + ", " + Time.time * 1000);
+			// moving the hovercraft left and right
+			rb.AddForce (Vector3.right * turnAngle / -15 * turnSpeed * Time.deltaTime);
 
 			// forward movement
 			if (forwardVel < 250) {
-				rb.AddRelativeForce (Vector3.forward * acceleration * 100 * Time.deltaTime);
+				rb.AddRelativeForce (Vector3.forward * acceleration * Time.deltaTime);
 			}
 
 			distThisFrame = Mathf.Round (100 * forwardVel * Time.deltaTime) / 100f;
@@ -93,7 +108,7 @@ public class Player : MonoBehaviour {
 			distance += distThisFrame;
 
 			// taking away electricity
-			electricity -= 18f * Time.deltaTime;
+			electricity = Mathf.Max(electricity- 18f * Time.deltaTime, 0);
 
 			// checking for low health and electricity
 			if (health <= 0) {
@@ -120,7 +135,7 @@ public class Player : MonoBehaviour {
 
 		// detecting collisions and deducting health
 		if (other.gameObject.CompareTag ("obstacle")) {
-			health -= Mathf.Abs (velocity * 0.02f);
+			health = Mathf.Max(health - Mathf.Abs (velocity * 0.02f), 0);
 		}
 	}
 
