@@ -1,6 +1,6 @@
-WindowsStandalone
+Android
 PlayerPath?
-C:/Dev/GitHub/Hover/Builds/Windows/Hover 0.4.0/Hover 0.4.0.exe
+C:/Dev/GitHub/Hover/Builds/Android/Hover 0.4.0.apk
 SceneListBegin?
 Assets/Scenes/Start.unity
 Assets/Scenes/Game.unity
