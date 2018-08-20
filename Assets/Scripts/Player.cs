@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
 	public static bool dead = false;
 	public static bool powerLoss = false;
 	public static float playerZ;
+	float hoverHeight = 3f;
 
 	string contMode;
 
@@ -128,7 +129,7 @@ public class Player : MonoBehaviour {
 	void FixedUpdate () {
 		// setting velocity for collision
 		velocity = rb.velocity.magnitude;			
-		transform.position = new Vector3 (transform.position.x, 5f, transform.position.z);
+		transform.position = new Vector3 (transform.position.x, hoverHeight, transform.position.z);
 	}
 
 	void OnCollisionEnter (Collision other) {

@@ -6,17 +6,22 @@ using UnityEngine.UI;
 public class SettingsCanvas : MonoBehaviour {
 
 	public int contMethod; // 0 is any; 1 is arrow keys, 2 is touch input
-	public Text ControlModeText;
+
 
 	public int qualSettings; // 0 - Performance, 1 - Balanced, 2 - Quality
-	public Text qualText;
 
-	public Toggle debugToggle;
-
-	public Text highscoreText;
+	Text controlModeText;
+	Text qualText;
+	Toggle debugToggle;
+	Text highscoreText;
 
 	// Use this for initialization
 	void Start () {
+
+		controlModeText = GameObject.Find("/SettingsCanvas/toggleControl/toggleContText").GetComponent<Text>();
+		qualText = GameObject.Find("/SettingsCanvas/toggleQuality/toggleQualText").GetComponent<Text>();
+		debugToggle = GameObject.Find("/SettingsCanvas/debugToggle").GetComponent<Toggle>();
+		highscoreText = GameObject.Find ("/HighscoreCanvas/highscoreText").GetComponent<Text> ();
 
 		// first run values
 		if (!PlayerPrefs.HasKey ("Highscore")) {
@@ -38,13 +43,13 @@ public class SettingsCanvas : MonoBehaviour {
 		// setting button text to current settings from playerprefs
 		//control method
 		if (PlayerPrefs.GetString ("ControlMode") == "ArrowKeys") {
-			ControlModeText.text = "Arrow Keys";
+			controlModeText.text = "Arrow Keys";
 			contMethod = 1;
 		} else if (PlayerPrefs.GetString ("ControlMode") == "TouchInput") {
-			ControlModeText.text = "Touch Input";
+			controlModeText.text = "Touch Input";
 			contMethod = 2;
 		} else if (PlayerPrefs.GetString ("ControlMode") == "Any") {
-			ControlModeText.text = "Any Input";
+			controlModeText.text = "Any Input";
 			contMethod = 0;
 		}
 
@@ -78,17 +83,17 @@ public class SettingsCanvas : MonoBehaviour {
 	public void ChangeControlMethod (){
 		if (contMethod == 1) {
 			contMethod = 2;
-			ControlModeText.text = "Touch Input";
+			controlModeText.text = "Touch Input";
 			PlayerPrefs.SetString ("ControlMode", "TouchInput");
 
 		} else if (contMethod == 2) {
 			contMethod = 0;
-			ControlModeText.text = "Any Input";
+			controlModeText.text = "Any Input";
 			PlayerPrefs.SetString ("ControlMode", "Any");
 
 		} else if (contMethod == 0) {
 			contMethod = 1;
-			ControlModeText.text = "Arrow Keys";
+			controlModeText.text = "Arrow Keys";
 			PlayerPrefs.SetString ("ControlMode", "ArrowKeys");
 		}
 	}
@@ -134,7 +139,6 @@ public class SettingsCanvas : MonoBehaviour {
 	}
 
 	public void backButton (){
-
 		PlayerPrefs.Save ();
 	}
 }

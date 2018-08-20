@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class CanvasController : MonoBehaviour {
 
+	// flags
 	bool paused = false;
 	bool debug = false;
 
@@ -23,7 +24,7 @@ public class CanvasController : MonoBehaviour {
 	AudioSource backgroundMusic;
 	float backgroundMusicVol;
 
-	//fps
+	//fps counter
 	float frameCount;
 	float nextUpdate;
 	float fps;
@@ -31,6 +32,8 @@ public class CanvasController : MonoBehaviour {
 
 	Canvas deathCanvas;
 	Canvas pauseCanvas;
+
+	float currHigh; // the current highscore
 
 
 	// Use this for initialization
@@ -59,18 +62,20 @@ public class CanvasController : MonoBehaviour {
 		backgroundMusicVol = 1.0f;
 
 		// hiding both canvases
-		deathCanvas.gameObject.SetActive (false);
-		pauseCanvas.gameObject.SetActive (false);
+		toggleCanvas(deathCanvas, false);
+		toggleCanvas(pauseCanvas, false);
 
-		newHighscoreText.gameObject.SetActive (false); // hiding the new highscore
+		newHighscoreText.enabled = false; // hiding the new highscore
 
 		if (PlayerPrefs.GetInt ("DebugMode") == 1) {
 			debug = true;
-			fpsText.gameObject.SetActive (true);
+			fpsText.enabled = true;
 		} else {
 			debug = false;
-			fpsText.gameObject.SetActive (false);
+			fpsText.enabled = false;
 		}
+
+		currHigh = PlayerPrefs.GetFloat ("Highscore");
 
 		nextUpdate = Time.time;
 	}
@@ -111,7 +116,7 @@ public class CanvasController : MonoBehaviour {
 				backgroundMusic.volume = backgroundMusicVol;
 			}
 
-			deathCanvas.gameObject.SetActive (true);
+			toggleCanvas(deathCanvas, true);
 
 			// setting correct death cause
 			if (Player.dead) {
@@ -127,9 +132,10 @@ public class CanvasController : MonoBehaviour {
 			endDistText.text = distanceText.text;
 
 			// setting new highscore
-			if (Player.distance > PlayerPrefs.GetFloat ("Highscore")) {
-				newHighscoreText.gameObject.SetActive (true);
+			if (Player.distance > currHigh) {
+				newHighscoreText.enabled = true;
 				PlayerPrefs.SetFloat ("Highscore", Player.distance);
+				currHigh = Player.distance;
 			}
 		}
 	}
@@ -146,12 +152,17 @@ public class CanvasController : MonoBehaviour {
 	public void Pause () {
 		paused = true;
 		Time.timeScale = 0;
-		pauseCanvas.gameObject.SetActive (true);
+		toggleCanvas(pauseCanvas, true);
 	}
 
 	public void Resume () {
 		paused = false;
 		Time.timeScale = 1;
-		pauseCanvas.gameObject.SetActive (false);
+		toggleCanvas(pauseCanvas, false);
+	}
+
+	public void toggleCanvas (Canvas c, bool enable) { // enables or disables canvas
+		c.enabled = enable;
+		c.gameObject.SetActive (enable);
 	}
 }

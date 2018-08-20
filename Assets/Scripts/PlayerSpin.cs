@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class PlayerSpin : MonoBehaviour {
 
-	float dir = -1.0f;
+	float dir = -0.8f;
 	bool justFlipped = false;
-	public GameObject highscoreCanvas;
-	
+	GameObject highscoreCanvas;
+	int maxY = 12;
+	int minY = 10;
+
+	void Start () {
+		highscoreCanvas = GameObject.Find ("/HighscoreCanvas");
+	}
+
 	// Update is called once per frame
 	void Update () {
 		transform.Rotate(Vector3.up, 10 * Time.deltaTime);
@@ -19,7 +25,7 @@ public class PlayerSpin : MonoBehaviour {
 		transform.position += Vector3.up*dir*Time.deltaTime;
 
 		// changing direction
-		if (transform.position.y > 8 || transform.position.y < 6) {
+		if (transform.position.y > maxY || transform.position.y < minY) {
 			if (!justFlipped) {
 				dir *= -1;
 				justFlipped = true;

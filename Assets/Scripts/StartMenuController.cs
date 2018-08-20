@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class StartMenuController : MonoBehaviour {
 
-	public Canvas helpCanvas;
-	public Canvas settingsCanvas;
+	// canvases
+	Canvas helpCanvas;
+	Canvas settingsCanvas;
 
 	// Use this for initialization
 	void Start () {
-		helpCanvas.gameObject.SetActive (false);
-		settingsCanvas.GetComponent<SettingsCanvas> ().UpdateHighscore ();
-		settingsCanvas.gameObject.SetActive (false);
+		helpCanvas = GameObject.Find("/HelpCanvas").GetComponent<Canvas>();
+		settingsCanvas = GameObject.Find("/SettingsCanvas").GetComponent<Canvas>();
+		toggleCanvas (helpCanvas, false);
+		toggleCanvas (settingsCanvas, false);
+		settingsCanvas.gameObject.GetComponent<SettingsCanvas> ().UpdateHighscore (); // updating highscore
 	}
 
 	public void Play(){
@@ -21,11 +24,11 @@ public class StartMenuController : MonoBehaviour {
 	}
 
 	public void Help(){
-		helpCanvas.gameObject.SetActive (true);
+		toggleCanvas (helpCanvas, false);
 	}
 
 	public void Settings(){
-		settingsCanvas.gameObject.SetActive (true);
+		toggleCanvas (settingsCanvas, true);
 	}
 
 	public void Quit(){
@@ -33,10 +36,15 @@ public class StartMenuController : MonoBehaviour {
 	}
 
 	public void closeHelp(){
-		helpCanvas.gameObject.SetActive (false);
+		toggleCanvas (helpCanvas, false);
 	}
 
 	public void closeSettings(){
-		settingsCanvas.gameObject.SetActive (false);
+		toggleCanvas (settingsCanvas, false);
+	}
+
+	public void toggleCanvas (Canvas c, bool enable) { // enables or disables canvas
+		c.enabled = enable;
+		c.gameObject.SetActive (enable);
 	}
 }
