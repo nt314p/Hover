@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{56C585EC-27D8-3A20-7786-2AAFC01E0F04}"
 EndProject
 Global
@@ -16,31 +16,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		Policies = $0
-		$0.TextStylePolicy = $1
-		$1.inheritsSet = null
-		$1.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $2
-		$2.NamespaceBraceStyle = EndOfLine
-		$2.ClassBraceStyle = EndOfLine
-		$2.InterfaceBraceStyle = EndOfLine
-		$2.StructBraceStyle = EndOfLine
-		$2.EnumBraceStyle = EndOfLine
-		$2.MethodBraceStyle = EndOfLine
-		$2.ConstructorBraceStyle = EndOfLine
-		$2.DestructorBraceStyle = EndOfLine
-		$2.AllowEventRemoveBlockInline = False
-		$2.AfterDelegateDeclarationParameterComma = True
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
-		$2.scope = text/x-csharp
-		$0.TextStylePolicy = $3
-		$3.FileWidth = 120
-		$3.TabsToSpaces = False
-		$3.inheritsSet = VisualStudio
-		$3.inheritsScope = text/plain
-		$3.scope = text/plain
 	EndGlobalSection
 EndGlobal
