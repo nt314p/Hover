@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour {
 
 	void FixedUpdate () {
 		if (!Player.dead && !Player.powerLoss) {
-			target = player.transform.position + new Vector3 (0, 25, -50);
+			target = player.transform.position + new Vector3 (0, 26, -50);
 			transform.position = Vector3.SmoothDamp(transform.position, target, ref positionVelocity, 0.15f);
 		}
 	}
