@@ -61,8 +61,10 @@ public class CanvasController : MonoBehaviour {
 		backgroundMusic = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
 		backgroundMusicVol = 1.0f;
 
-		// hiding both canvases
-		toggleCanvas(deathCanvas, false);
+        Time.timeScale = 1; // resetting timescale
+
+        // hiding both canvases
+        toggleCanvas(deathCanvas, false);
 		toggleCanvas(pauseCanvas, false);
 
 		newHighscoreText.enabled = false; // hiding the new highscore

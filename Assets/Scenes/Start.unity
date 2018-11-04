@@ -2796,11 +2796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contMethod: 1
-  ControlModeText: {fileID: 1126553734}
   qualSettings: 0
-  qualText: {fileID: 1806006309}
-  debugToggle: {fileID: 145954477}
-  highscoreText: {fileID: 1808293366}
 --- !u!1 &1443920699
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,8 +3145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a0b45cae8f5414ab445e8f4310468a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helpCanvas: {fileID: 266143668}
-  settingsCanvas: {fileID: 1414696127}
 --- !u!1 &1634529595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,7 +3870,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695bd1c2db07f4c3297efaf54e71ef74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highscoreCanvas: {fileID: 2095915574}
 --- !u!4 &2065292161
 Transform:
   m_ObjectHideFlags: 0

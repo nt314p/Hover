@@ -43,7 +43,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 0.9
-    meshCompression: 1
+    meshCompression: 3
     addColliders: 0
     importVisibility: 1
     importBlendShapes: 1
@@ -65,9 +65,9 @@ ModelImporter:
     previousCalculatedGlobalScale: 1
     hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
-    normalSmoothAngle: 40
+    normalSmoothAngle: 50
     normalImportMode: 1
-    tangentImportMode: 3
+    tangentImportMode: 1
     normalCalculationMode: 4
   importAnimation: 1
   copyAvatar: 0
@@ -83,7 +83,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

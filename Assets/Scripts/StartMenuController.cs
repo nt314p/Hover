@@ -24,7 +24,7 @@ public class StartMenuController : MonoBehaviour {
 	}
 
 	public void Help(){
-		toggleCanvas (helpCanvas, false);
+		toggleCanvas (helpCanvas, true);
 	}
 
 	public void Settings(){
