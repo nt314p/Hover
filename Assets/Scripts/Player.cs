@@ -31,7 +31,7 @@ public class Player : MonoBehaviour {
 
 	float distThisFrame;
 
-	Rigidbody rb;
+	public Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
