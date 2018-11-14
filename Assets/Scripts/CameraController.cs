@@ -9,13 +9,12 @@ public class CameraController : MonoBehaviour {
 	// smooth follow variables
 	Vector3 target;
 	private Vector3 positionVelocity;
-    Vector3 offset = new Vector3(0, 26, -20);
-    float follow = 0.15f;
+    Vector3 offset = new Vector3(0, 26, -30); // 0, 26, -20
+	float minHeight = 1f;
+    float follow = 0.2f;
 	Rigidbody playerR;
 	Rigidbody rb;
-	float scale = 0.05f;
-	Vector3 acceleration;
-	Vector3 lastVelocity;
+	float maxDistX = 70f;
 	
 
 	void Start () {
@@ -26,15 +25,27 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		ground.transform.position = new Vector3(ground.transform.position.x, ground.transform.position.y, Player.playerZ+571.8f);
+		ground.transform.position = new Vector3(player.transform.position.x, ground.transform.position.y, Player.playerZ+571.8f);
     	// acceleration = (r.velocity - lastVelocity) / Time.fixedDeltaTime;
     	// lastVelocity = r.velocity;
 
 		if (!Player.dead && !Player.powerLoss) {
-			float dist = Vector3.Distance(this.transform.position, player.transform.position);
-			rb.AddForce((offset+player.transform.position-this.transform.position)*dist*0.1f);
-			// target = player.transform.position + acceleration*scale + offset;
-			// transform.position = Vector3.SmoothDamp(transform.position, target, ref positionVelocity, follow);
+			// Vector3 newPosition = player.transform.position + offset;
+			// newPosition.y = Mathf.Max (newPosition.y + offset.y, minHeight);
+			// transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref positionVelocity, follow);
+
+			
+
+			//float dist = Vector3.Distance(this.transform.position, player.transform.position);
+			//rb.AddForce((offset+player.transform.position-this.transform.position)*dist*0.1f);
+
+			target = player.transform.position + offset;
+			Vector3 newPosition = Vector3.SmoothDamp(transform.position, target, ref positionVelocity, follow);
+			float rawDistX = newPosition.x - player.transform.position.x;
+			if (Mathf.Abs(rawDistX) > maxDistX) {
+				newPosition.x = player.transform.position.x + Mathf.Sign(rawDistX) * maxDistX;
+			}
+			transform.position = newPosition;
 		}
 	}
 }
