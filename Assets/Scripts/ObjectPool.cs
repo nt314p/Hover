@@ -29,6 +29,16 @@ public class ObjectPool : MonoBehaviour {
 	public int rowNum = 0; // 0 - 6 is 1 - 7
 	int rows; // how many rows of obstacles can exist at once
 
+	float singleObsP = 0.4f;
+	float doubleObsP = 0.1f;
+	// pickups only spawn if an obstacle does not
+	float electricityP = 0.3f;
+	float wrenchP = 0.1f;
+	// should both probabilities be true, a double will spawn, probabilities will be calculated twice
+
+	int chunks = 100;
+	int chuckSize = 40;
+
 	void Start () {
 
 		rows = (int)(obsOffset / obsEveryDist) + 2; // setting rows
@@ -72,6 +82,21 @@ public class ObjectPool : MonoBehaviour {
 
 	public void spawnRow(){
 		float offsetZ = player.transform.position.z + obsOffset;
+
+
+		// iterating though chunks
+		int chunkRange = chunks * chuckSize;
+		for (int x = chuckSize/2; x < chunkRange; x+=chuckSize) {
+			float randomObsRange = Random.Range(0, 1);
+			if (randomObsRange < singleObsP) { // single obstacle
+				// SPAWN SINGLE OBSTACLE
+			} else if (randomObsRange < singleObsP + doubleObsP) { // double obstacle
+				// SPAWN DOUBLE OBSTACLE
+			} else { // no obstacles have spawned, spawn pickups
+				// MORE IF STATEMENTS FOR PROBABILITIES
+			}
+		}
+
 
 		// spawning obstacles
 		for (int i = 0; i < obsDensity; i++) {

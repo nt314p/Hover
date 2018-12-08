@@ -55,7 +55,7 @@ public class CanvasController : MonoBehaviour {
 		frameCount = 0.0f;
 		nextUpdate = 0.0f;
 		fps = 0.0f;
-		updateRate = 4.0f;
+		updateRate = 10.0f;
 
 		// music settings
 		backgroundMusic = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
