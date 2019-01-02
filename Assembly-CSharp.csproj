@@ -55,7 +55,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CanvasController.cs" />
-     <Compile Include="Assets\Scripts\ObjectPool.cs" />
+     <Compile Include="Assets\Scripts\ObjectPoolManager.cs" />
      <Compile Include="Assets\Scripts\ObjectSpawner.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerSpin.cs" />
@@ -67,11 +67,11 @@
  <Reference Include="Unity.PackageManagerUI.Editor">
  <HintPath>C:/Users/Nicolas/Dev/Hover/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/Nicolas/Dev/Hover/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>C:/Users/Nicolas/Dev/Hover/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>C:/Users/Nicolas/Dev/Hover/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.DataPrivacy">
  <HintPath>C:/Users/Nicolas/Dev/Hover/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -288,9 +288,6 @@
  </Reference>
  <Reference Include="Unity.Analytics.Tracker">
  <HintPath>C:/Users/Nicolas/Dev/Hover/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>C:/Users/Nicolas/Dev/Hover/Library/PackageCache/com.unity.purchasing@2.0.3/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>
