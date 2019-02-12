@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
 	public static bool dead = false;
 	public static bool powerLoss = false;
 	public static float playerZ;
-	float hoverHeight = 3f;
+	float hoverHeight = 5f;
 
 	string contMode;
 

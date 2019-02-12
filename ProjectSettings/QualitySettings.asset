@@ -4,11 +4,11 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 2
+  m_CurrentQuality: 0
   m_QualitySettings:
   - serializedVersion: 2
     name: Performance
-    pixelLightCount: 4
+    pixelLightCount: 1
     shadows: 1
     shadowResolution: 0
     shadowProjection: 1
@@ -21,7 +21,7 @@ QualitySettings:
     blendWeights: 1
     textureQuality: 2
     anisotropicTextures: 0
-    antiAliasing: 2
+    antiAliasing: 0
     softParticles: 0
     softVegetation: 0
     realtimeReflectionProbes: 0
@@ -43,7 +43,7 @@ QualitySettings:
     excludedTargetPlatforms: []
   - serializedVersion: 2
     name: Balanced
-    pixelLightCount: 5
+    pixelLightCount: 1
     shadows: 2
     shadowResolution: 1
     shadowProjection: 1
@@ -78,7 +78,7 @@ QualitySettings:
     excludedTargetPlatforms: []
   - serializedVersion: 2
     name: Quality
-    pixelLightCount: 5
+    pixelLightCount: 1
     shadows: 2
     shadowResolution: 3
     shadowProjection: 1

@@ -23,6 +23,8 @@ public class CanvasController : MonoBehaviour {
 	// audio
 	AudioSource backgroundMusic;
 	float backgroundMusicVol;
+	readonly int refreshCanvasRate = 4; // every x frames the canvas refreshes
+	int refreshFrameCount; // how many frames have gone by since last refresh
 
 	//fps counter
 	float frameCount;
@@ -51,6 +53,8 @@ public class CanvasController : MonoBehaviour {
 
 		deathCanvas = GameObject.Find ("/DeathCanvas").GetComponent<Canvas> ();
 		pauseCanvas = GameObject.Find ("/PauseCanvas").GetComponent<Canvas> ();
+
+		refreshFrameCount = 0;
 
 		frameCount = 0.0f;
 		nextUpdate = 0.0f;
@@ -92,11 +96,14 @@ public class CanvasController : MonoBehaviour {
 				Resume ();
 			}
 
-			// displaying status
-			healthText.text = "Health: " + System.Math.Round (Player.health, 1);
-			electricityText.text = "Electricity: " + System.Math.Round (Player.electricity, 1);
-			speedText.text = "Speed: " + System.Math.Round (Player.forwardVel, 1) + " m/s";
-			distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
+			if (refreshFrameCount % refreshCanvasRate == 0) {
+				refreshFrameCount = 0;
+				// displaying status
+				healthText.text = "Health: " + System.Math.Round (Player.health, 1);
+				electricityText.text = "Electricity: " + System.Math.Round (Player.electricity, 1);
+				speedText.text = "Speed: " + System.Math.Round (Player.forwardVel, 1) + " m/s";
+				distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
+			}
 
 			// fps
 			if (debug) {
@@ -109,6 +116,8 @@ public class CanvasController : MonoBehaviour {
 
 				fpsText.text = "FPS: " + fps;
 			}
+
+			refreshFrameCount++;
 
 		} else {
 
