@@ -3122,8 +3122,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacle: {fileID: 1003600847021890, guid: 2a392f459d25c43639ddc7c40831515c, type: 3}
-  electricityPickup: {fileID: 100002, guid: e47243aa05669644bbbd803d32d8dffb, type: 3}
-  wrenchPickup: {fileID: 100002, guid: 3f519ae499773cd4591dfc02cddea9ed, type: 3}
+  electricityPickup: {fileID: 4737519073333341440, guid: 018b9b59c7ad6b84ebb506b3360ca1c0,
+    type: 3}
+  wrenchPickup: {fileID: 3276952786337021807, guid: 775b05964c68c5740869d0ee7b2c0d51,
+    type: 3}
   obsEveryDist: 200
   everyDistCounter: 0
   rowNum: 0
