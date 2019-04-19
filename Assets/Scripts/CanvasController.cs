@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CanvasController : MonoBehaviour {
 
@@ -24,19 +24,20 @@ public class CanvasController : MonoBehaviour {
 	AudioSource backgroundMusic;
 	float backgroundMusicVol;
 	readonly int refreshCanvasRate = 4; // every x frames the canvas refreshes
-	int refreshFrameCount; // how many frames have gone by since last refresh
+	public int refreshFrameCount; // how many frames have gone by since last refresh
 
 	//fps counter
-	float frameCount;
+	public float frameCount;
 	float nextUpdate;
 	float fps;
 	float updateRate;
+	int fpsTextUpdateRate;
+	float dt;
 
 	Canvas deathCanvas;
 	Canvas pauseCanvas;
 
 	float currHigh; // the current highscore
-
 
 	// Use this for initialization
 	void Start () {
@@ -60,16 +61,18 @@ public class CanvasController : MonoBehaviour {
 		nextUpdate = 0.0f;
 		fps = 0.0f;
 		updateRate = 10.0f;
+		fpsTextUpdateRate = 4; // seconds per update
+		dt = 0.0f;
 
 		// music settings
 		backgroundMusic = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
 		backgroundMusicVol = 1.0f;
 
-        Time.timeScale = 1; // resetting timescale
+		Time.timeScale = 1; // resetting timescale
 
-        // hiding both canvases
-        toggleCanvas(deathCanvas, false);
-		toggleCanvas(pauseCanvas, false);
+		// hiding both canvases
+		toggleCanvas (deathCanvas, false);
+		toggleCanvas (pauseCanvas, false);
 
 		newHighscoreText.enabled = false; // hiding the new highscore
 
@@ -103,18 +106,20 @@ public class CanvasController : MonoBehaviour {
 				electricityText.text = "Electricity: " + System.Math.Round (Player.electricity, 1);
 				speedText.text = "Speed: " + System.Math.Round (Player.forwardVel, 1) + " m/s";
 				distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
+				if (debug) {
+					fpsText.text = "FPS: " + Mathf.Round(fps);
+				}
 			}
 
 			// fps
 			if (debug) {
 				frameCount++;
-				if (Time.time > nextUpdate) {
-					nextUpdate += 1.0f / updateRate;
-					fps = frameCount * updateRate;
+				dt += Time.deltaTime;
+				if (dt > 1.0f / updateRate) {
+					fps = frameCount / dt;
 					frameCount = 0;
+					dt -= 1.0f / updateRate;
 				}
-
-				fpsText.text = "FPS: " + fps;
 			}
 
 			refreshFrameCount++;
@@ -127,7 +132,7 @@ public class CanvasController : MonoBehaviour {
 				backgroundMusic.volume = backgroundMusicVol;
 			}
 
-			toggleCanvas(deathCanvas, true);
+			toggleCanvas (deathCanvas, true);
 
 			// setting correct death cause
 			if (Player.dead) {
@@ -163,13 +168,13 @@ public class CanvasController : MonoBehaviour {
 	public void Pause () {
 		paused = true;
 		Time.timeScale = 0;
-		toggleCanvas(pauseCanvas, true);
+		toggleCanvas (pauseCanvas, true);
 	}
 
 	public void Resume () {
 		paused = false;
 		Time.timeScale = 1;
-		toggleCanvas(pauseCanvas, false);
+		toggleCanvas (pauseCanvas, false);
 	}
 
 	public void toggleCanvas (Canvas c, bool enable) { // enables or disables canvas

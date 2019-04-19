@@ -22,9 +22,9 @@ public class ObjectPoolManager : MonoBehaviour {
 	public float everyDistCounter = 0;
 	float distThisFrame;
 
-	int obsDensity = 80; // number of objects to distribute across the range
-	int wrenchDensity = 3;
-	int electricityDensity = 16;
+	int obsDensity = 60; // number of objects to distribute across the range
+	int wrenchDensity = 2;
+	int electricityDensity = 14;
 	public int rowNum = 0; // 0 - 6 is 1 - 7
 	int rows; // how many rows of obstacles can exist at once
 
@@ -92,7 +92,7 @@ public class ObjectPoolManager : MonoBehaviour {
 
 		obj.transform.localScale = new Vector3 (w, h, l); // scaling obstacle
 
-		float objY = isPickup ? 10f : (h / 2 - 2);
+		float objY = isPickup ? 10f : (h / 2.0f - 2);
 
 		obj.transform.position = new Vector3 (objX, objY, objZ);
 		obj.transform.rotation = Quaternion.identity;
