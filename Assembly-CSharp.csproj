@@ -59,10 +59,12 @@
      <Compile Include="Assets\Scripts\CanvasController.cs" />
      <Compile Include="Assets\Scripts\ObjectPoolManager.cs" />
      <Compile Include="Assets\Scripts\ObjectSpawner.cs" />
+     <Compile Include="Assets\Scripts\PIDController.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerSpin.cs" />
      <Compile Include="Assets\Scripts\SettingsCanvas.cs" />
      <Compile Include="Assets\Scripts\StartMenuController.cs" />
+     <Compile Include="Assets\Scripts\Thruster.cs" />
      <None Include="Assets\Shaders\Color Specular.shader" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/Nicolas/Dev/Hover/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

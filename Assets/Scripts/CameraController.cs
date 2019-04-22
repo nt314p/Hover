@@ -15,6 +15,7 @@ public class CameraController : MonoBehaviour {
 	Rigidbody playerR;
 	Rigidbody rb;
 	float maxDistX = 70f;
+	readonly float groundOffset = 571.8f;
 	
 
 	void Start () {
@@ -24,17 +25,15 @@ public class CameraController : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 	}
 
-	void FixedUpdate () {
-		ground.transform.position = new Vector3(player.transform.position.x, ground.transform.position.y, Player.playerZ+571.8f);
+	void LateUpdate () {
+		ground.transform.position = new Vector3(player.transform.position.x, ground.transform.position.y, Player.GetPlayerZ()+groundOffset);
     	// acceleration = (r.velocity - lastVelocity) / Time.fixedDeltaTime;
     	// lastVelocity = r.velocity;
 
-		if (!Player.dead && !Player.powerLoss) {
+		if (!Player.IsDead() && !Player.IsPowerLoss()) {
 			// Vector3 newPosition = player.transform.position + offset;
 			// newPosition.y = Mathf.Max (newPosition.y + offset.y, minHeight);
 			// transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref positionVelocity, follow);
-
-			
 
 			//float dist = Vector3.Distance(this.transform.position, player.transform.position);
 			//rb.AddForce((offset+player.transform.position-this.transform.position)*dist*0.1f);

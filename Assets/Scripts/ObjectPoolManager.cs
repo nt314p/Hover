@@ -61,7 +61,7 @@ public class ObjectPoolManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!Player.dead && !Player.powerLoss) {
+		if (!Player.IsDead() && !Player.IsPowerLoss()) {
 			forwardVel = player.GetComponent<Rigidbody> ().velocity.z;
 
 			// spawning objects

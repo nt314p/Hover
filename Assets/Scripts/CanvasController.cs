@@ -71,8 +71,8 @@ public class CanvasController : MonoBehaviour {
 		Time.timeScale = 1; // resetting timescale
 
 		// hiding both canvases
-		toggleCanvas (deathCanvas, false);
-		toggleCanvas (pauseCanvas, false);
+		ToggleCanvas (deathCanvas, false);
+		ToggleCanvas (pauseCanvas, false);
 
 		newHighscoreText.enabled = false; // hiding the new highscore
 
@@ -92,7 +92,7 @@ public class CanvasController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (!Player.dead && !Player.powerLoss) {
+		if (!Player.IsDead() && !Player.IsPowerLoss()) {
 			if (Input.GetKeyUp (KeyCode.Escape) && !paused) {
 				Pause ();
 			} else if (Input.GetKeyUp (KeyCode.Escape) && paused) {
@@ -102,10 +102,10 @@ public class CanvasController : MonoBehaviour {
 			if (refreshFrameCount % refreshCanvasRate == 0) {
 				refreshFrameCount = 0;
 				// displaying status
-				healthText.text = "Health: " + System.Math.Round (Player.health, 1);
-				electricityText.text = "Electricity: " + System.Math.Round (Player.electricity, 1);
-				speedText.text = "Speed: " + System.Math.Round (Player.forwardVel, 1) + " m/s";
-				distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
+				healthText.text = "Health: " + System.Math.Round (Player.GetHealth(), 1);
+				electricityText.text = "Electricity: " + System.Math.Round (Player.GetElectricity(), 1);
+				speedText.text = "Speed: " + System.Math.Round (Player.GetForwardVelocity(), 1) + " m/s";
+				distanceText.text = "Distance: " + System.Math.Round (Player.GetDistance(), 1) + " m";
 				if (debug) {
 					fpsText.text = "FPS: " + Mathf.Round(fps);
 				}
@@ -132,26 +132,26 @@ public class CanvasController : MonoBehaviour {
 				backgroundMusic.volume = backgroundMusicVol;
 			}
 
-			toggleCanvas (deathCanvas, true);
+			ToggleCanvas (deathCanvas, true);
 
 			// setting correct death cause
-			if (Player.dead) {
+			if (Player.IsDead()) {
 				deathTitleText.text = "Wrecked!";
-			} else if (Player.powerLoss) {
+			} else if (Player.IsPowerLoss()) {
 				deathTitleText.text = "Power Loss!";
 			}
 
 			// just aligning some stuff up
-			distanceText.text = "Distance: " + System.Math.Round (Player.distance, 1) + " m";
+			distanceText.text = "Distance: " + System.Math.Round (Player.GetDistance(), 1) + " m";
 
 			// end distance display
 			endDistText.text = distanceText.text;
 
 			// setting new highscore
-			if (Player.distance > currHigh) {
+			if (Player.GetDistance() > currHigh) {
 				newHighscoreText.enabled = true;
-				PlayerPrefs.SetFloat ("Highscore", Player.distance);
-				currHigh = Player.distance;
+				PlayerPrefs.SetFloat ("Highscore", Player.GetDistance());
+				currHigh = Player.GetDistance();
 			}
 		}
 	}
@@ -168,16 +168,16 @@ public class CanvasController : MonoBehaviour {
 	public void Pause () {
 		paused = true;
 		Time.timeScale = 0;
-		toggleCanvas (pauseCanvas, true);
+		ToggleCanvas (pauseCanvas, true);
 	}
 
 	public void Resume () {
 		paused = false;
 		Time.timeScale = 1;
-		toggleCanvas (pauseCanvas, false);
+		ToggleCanvas (pauseCanvas, false);
 	}
 
-	public void toggleCanvas (Canvas c, bool enable) { // enables or disables canvas
+	public void ToggleCanvas (Canvas c, bool enable) { // enables or disables canvas
 		c.enabled = enable;
 		c.gameObject.SetActive (enable);
 	}

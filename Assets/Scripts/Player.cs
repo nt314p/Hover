@@ -6,32 +6,32 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour {
 
 	// transform and rotation
-	float acceleration = 15000f;
-	float turnSpeed = 20000f;
-	public float turnAngle = 0f;
-	public float turnStatus = 0; // -1 left, 0 nono, 1 right
-	public float velocity;
+	readonly float acceleration = 15000f;
+	readonly float turnSpeed = 20000f;
+	private static float turnAngle = 0f;
+	private float turnStatus = 0; // -1 left, 0 nono, 1 right
+	private float velocity;
 
-	public static float health = 100f;
-	public static float electricity = 1000f;
-	public static float forwardVel;
-	public static float distance = 0f;
-	public static bool dead = false;
-	public static bool powerLoss = false;
-	public static float playerZ;
-	float hoverHeight = 5f;
+	private static float health = 100f;
+	private static float electricity = 1000f;
+	private static float forwardVel;
+	private static float distance = 0f;
+	private static bool dead = false;
+	private static bool powerLoss = false;
+	private static float playerZ;
+	private readonly static float hoverHeight = 5f;
 
-	string contMode;
+	private string contMode;
 
 	// audio
-	AudioSource powerDown;
-	bool powerDownPlay = false;
-	AudioSource crash;
-	bool crashPlay = false;
+	private AudioSource powerDown;
+	private bool powerDownPlay = false;
+	private AudioSource crash;
+	private bool crashPlay = false;
 
-	float distThisFrame;
+	private float distThisFrame;
 
-	public Rigidbody rb;
+	private Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour {
 
 		rb = GetComponent<Rigidbody> ();
 		rb.angularVelocity = Vector3.zero;
-		rb.constraints = RigidbodyConstraints.FreezePositionY;
+		//rb.constraints = RigidbodyConstraints.FreezePositionY;
 	}
 	
 	// Update is called once per frame
@@ -100,7 +100,7 @@ public class Player : MonoBehaviour {
 
 			// forward movement
 			if (forwardVel < 250) {
-				rb.AddRelativeForce (Vector3.forward * acceleration * Time.deltaTime);
+				//rb.AddRelativeForce (Vector3.forward * acceleration * Time.deltaTime);
 			}
 
 			distThisFrame = Mathf.Round (100 * forwardVel * Time.deltaTime) / 100f;
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour {
 	void FixedUpdate () {
 		// setting velocity for collision
 		velocity = rb.velocity.magnitude;			
-		transform.position = new Vector3 (transform.position.x, hoverHeight, transform.position.z);
+		//transform.position = new Vector3 (transform.position.x, hoverHeight, transform.position.z);
 	}
 
 	void OnCollisionEnter (Collision other) {
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour {
 		health = Mathf.Min(100, health + 5);
 	}
 
-	void Death () {
+	public void Death () {
 		if (!crashPlay) {
 			crash.Play ();
 			crashPlay = true;
@@ -168,7 +168,7 @@ public class Player : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.None;
 	}
 
-	void PowerLoss () {
+	public void PowerLoss () {
 		if (!powerDownPlay) {
 			powerDown.Play ();
 			powerDownPlay = true;
@@ -199,10 +199,44 @@ public class Player : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
-		rb.constraints = RigidbodyConstraints.FreezePositionY;
+		//rb.constraints = RigidbodyConstraints.FreezePositionY;
 
 		Debug.Log ("Level Loaded");
 		Debug.Log (scene.name);
 		Debug.Log (mode);
 	}
+
+	public static float GetHealth() {
+		return health;
+	}
+
+	public static float GetElectricity() {
+		return electricity;
+	}
+
+	public static float GetDistance() {
+		return distance;
+	}
+
+	public static float GetForwardVelocity() {
+		return forwardVel;
+	}
+
+	public static bool IsDead() {
+		return dead;
+	}
+
+	public static bool IsPowerLoss() {
+		return powerLoss;
+	}
+
+	public static float GetPlayerZ() {
+		return playerZ;
+	}
+
+	public static float GetHoverHeight() {
+		return hoverHeight;
+	}
+
+
 }
