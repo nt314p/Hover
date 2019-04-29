@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
 	private static bool dead = false;
 	private static bool powerLoss = false;
 	private static float playerZ;
-	private readonly static float hoverHeight = 5f;
+	public float hoverHeight = 5f;
 
 	private string contMode;
 
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour {
 	private float distThisFrame;
 
 	private Rigidbody rb;
+	private Thruster[,] thrusters;
 
 	// Use this for initialization
 	void Start () {
@@ -44,6 +45,13 @@ public class Player : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		rb.angularVelocity = Vector3.zero;
 		//rb.constraints = RigidbodyConstraints.FreezePositionY;
+
+		thrusters = new Thruster[2,2];
+
+		thrusters[0,0] = GameObject.Find ("fl").GetComponent<Thruster>();
+		thrusters[0,1] = GameObject.Find ("fr").GetComponent<Thruster>();
+		thrusters[1,0] = GameObject.Find ("bl").GetComponent<Thruster>();
+		thrusters[1,1] = GameObject.Find ("br").GetComponent<Thruster>();
 	}
 	
 	// Update is called once per frame
@@ -92,11 +100,21 @@ public class Player : MonoBehaviour {
 			}
 
 			// turning the hovercraft
-			transform.eulerAngles = new Vector3 (0, 0, turnAngle);
+			//transform.eulerAngles = new Vector3 (0, 0, turnAngle);
+
+			float hin = Input.GetAxis ("Horizontal") * 20;
+
+			// new system
+			thrusters[1,1].setSetpoint(hoverHeight + 8f * Mathf.Sin(-hin));
+			thrusters[1,0].setSetpoint(hoverHeight + 8f * Mathf.Sin(hin));
+			thrusters[0,1].setSetpoint(hoverHeight + 8f * Mathf.Sin(-hin));
+			thrusters[0,0].setSetpoint(hoverHeight + 8f * Mathf.Sin(hin));
+
+			//Debug.Log(hoverHeight + 8f * Mathf.Sin(turnAngle));
 
 
 			// moving the hovercraft left and right
-			rb.AddForce (Vector3.right * turnAngle / -15 * turnSpeed * Time.deltaTime);
+			//rb.AddForce (Vector3.right * turnAngle / -15 * turnSpeed * Time.deltaTime);
 
 			// forward movement
 			if (forwardVel < 250) {
@@ -234,9 +252,9 @@ public class Player : MonoBehaviour {
 		return playerZ;
 	}
 
-	public static float GetHoverHeight() {
-		return hoverHeight;
-	}
+	// public static float GetHoverHeight() {
+	// 	return hoverHeight;
+	// }
 
 
 }

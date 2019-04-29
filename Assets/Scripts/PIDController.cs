@@ -5,8 +5,9 @@ public class PIDController {
     float error;
     float dInput;
     float P, I, D;
-    float setpoint;
+    public float setpoint;
     float lastInput = 8; // BAD HARDCODE
+    float lastVal;
     float outMin, outMax;
     public PIDController(float kP, float kI, float kD, float outMin, float outMax) {
         this.kP = kP;
@@ -35,10 +36,12 @@ public class PIDController {
         float output = P + I + D;
         if(output > outMax) output = outMax;
         else if(output < outMin) output = outMin;
-        return P+I+D;
+        lastVal = output;
+        return output;
     }
 
     public override string ToString() {
-        return "P: " + P + " I: " + I + " D: " + D;
+        //return "P: " + P + " I: " + I + " D: " + D;
+        return "SP: " + setpoint + " IN: " + lastInput + " VAL: " + lastVal;
     }
 }
